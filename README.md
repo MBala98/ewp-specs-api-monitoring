@@ -9,8 +9,8 @@ Summary
 -------
 
 This document describes the **Monitoring API** implemented by the EWP Stats Portal, which is hosted by EWP administrators. 
-This API allows clients in EWP network to inform network's administrators about any issues encountered while interacting
-with the servers. This API SHOULD NOT be implemented by anyone other than EWP Stats Portal. Clients SHOULD call this API
+This API allows clients in EWP network to inform network's administrators about any issues encountered when making 
+requests. This API SHOULD NOT be implemented by anyone other than EWP Stats Portal. Clients MUST call this API
 in case of detecting any exceptions or incorrect responses from any of the servers in the EWP network. 
 Calls to this API MUST NOT contain any private data.
 
@@ -19,23 +19,25 @@ Introduction
 ----------------------
 
 The distributed design of EWP network, while flexible, makes it hard to control and verify interactions happening
-in the network. The errors could arise for a variety of reasons - bugs in implementation, incorrect data, or unreachable
+in the network. Errors could arise for a variety of reasons - bugs in implementation, incorrect data, or unreachable
 servers. In order to minimize the number of errors in the long term and fix new ones quickly, members of EWP network
 should actively report any incorrect behaviours. We decided clients should take up this responsibility, as they are the
-ones initializing interactions and they know exactly what they want to receive from the server. 
+ones initializing interactions, and they are able to verify responses and detect network errors.
 
 
 Endpoints
 ---------
 
-This API consists of a single endpoint called the [inform endpoint](endpoints/inform.md).
-The details of this endpoint can be found on a separate page linked above.
+This API consists of a single endpoint called the [report endpoint](endpoints/report.md).
 
 
 Server implementing this API
 ----------------
 
-The server implementing this API is called EWP Stats Portal. It can be identified by HEI id listed in [architecture specification][specs-arch].
+The server implementing this API is called EWP Stats Portal. It identified by HEI id
+```
+stats.erasmuswithoutpaper.eu
+```
 
 
 When to call
@@ -44,7 +46,7 @@ When to call
 The general rule to calling this API is: Call it in every case you do error handling or exception catching. This implies that
 every HTTP status code that is *4xx* or *5xx* should be reported, as well as connection timeouts. However, that is not all. 
 For example server could return status code 200, but in reality the data returned is lacking, incorrect, or generally
-does not make sense. This situation also warrants a call to monitoring server.
+does not make sense. This situation also warrants a call to the monitoring server.
 
 Due to the number of different APIs it's not possible to clearly define every potential incorrect interaction in the network.
 It's better to send too much rather than too little, but remember to use your common sense.
@@ -62,7 +64,7 @@ Privacy
 -------
 
 EWP administrators are not authorized to access private data that is being exchanged in the network. That is why calls to
-monitoring API MUST NOT contain any private data. Clients should restrain to data described in the request parameters.
+monitoring API MUST NOT contain any private data. Clients should send only the data described in the request parameters.
 
 Security
 --------
@@ -75,4 +77,3 @@ MUST follow the requirements listed in the [HTTP Signature specification][sec-ht
 [develhub]: http://developers.erasmuswithoutpaper.eu/
 [statuses]: https://github.com/erasmus-without-paper/ewp-specs-management#statuses
 [sec-httpsig]: https://github.com/erasmus-without-paper/ewp-specs-sec-cliauth-httpsig
-[specs-arch]: https://github.com/erasmus-without-paper/ewp-specs-architecture#permissions
