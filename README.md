@@ -55,13 +55,14 @@ For example for [Outgoing Mobility Learning Agreements API][outgoing-la-api] it'
 
 The type of error that is being reported. This value MUST be one of:
 
-  * SERVER_ERROR - When server returned any *4xx* or *5xx* HTTP code.
-  * INCORRECT_RESPONSE - When the client could not verify the server's response, for example because of some incorrect
-    values returned by the server.
-  * TIMEOUT - When client decided the server is taking too long to respond.
-  * NETWORK_ERROR - For network errors other than timeout, like DNS failures or SSL certificate errors.
-  * API_LOOKUP_ERROR - When there is any error with looking up the API from the catalogue, for example when the HEI does not
+  * API_LOOKUP_ERROR - When there is any error with looking up the API from the catalogue. For example the HEI does not
     implement an API that it is expected to, like the API for fetching an LA when a CNR notification was received.
+  * NETWORK_ERROR - For network errors other than timeout, like DNS failures or SSL certificate errors.
+  * TIMEOUT - When client decided the server is taking too long to respond.
+  * SERVER_ERROR - When server returned any *4xx* or *5xx* HTTP code.
+  * INVALID_RESPONSE - When the client could not verify the server's response, for example because of some incorrect
+    values returned by the server.
+
 
 ### `api_url` (optional)
 
@@ -72,7 +73,7 @@ than *API_LOOKUP_ERROR*.
 ### `http_code` (optional)
 
 The HTTP status code that was returned by the server in the request that is being reported. This parameter MUST be passed
-when *error_type* parameter has value *SERVER_ERROR* or *INCORRECT_RESPONSE*.
+when *error_type* parameter has value *SERVER_ERROR* or *INVALID_RESPONSE*.
 
 
 ### `message` (optional)
@@ -138,8 +139,9 @@ This version of this API uses [standard EWP Authentication and Security, Version
 Server implementers choose which security methods they support by declaring them in their Manifest API entry.
 
 
-[develhub]: http://developers.erasmuswithoutpaper.eu/
 [common-types]: https://github.com/erasmus-without-paper/ewp-specs-architecture/blob/stable-v1/common-types.xsd
-[statuses]: https://github.com/erasmus-without-paper/ewp-specs-management#statuses
-[sec-v2]: https://github.com/erasmus-without-paper/ewp-specs-sec-intro/tree/stable-v2
+[develhub]: http://developers.erasmuswithoutpaper.eu/
+[error-handling]: https://github.com/erasmus-without-paper/ewp-specs-architecture#error-handling
 [outgoing-la-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-las/tree/stable-v1
+[sec-v2]: https://github.com/erasmus-without-paper/ewp-specs-sec-intro/tree/stable-v2
+[statuses]: https://github.com/erasmus-without-paper/ewp-specs-management#statuses
